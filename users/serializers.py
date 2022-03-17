@@ -3,7 +3,9 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import update_session_auth_hash
 
-from users.models import CustomUser
+from users.models import \
+    CustomUser, \
+    Manager, Saler, Technician
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -55,6 +57,36 @@ class CustomUserSerializer(serializers.ModelSerializer):
         update_session_auth_hash(self.context.get('request'), instance)
 
         return instance
+
+
+class ManagerSerializer(CustomUserSerializer):
+    def create(self, validated_data):
+        return Manager.objects.create_superuser(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+
+
+class SalerSerializer(CustomUserSerializer):
+    def create(self, validated_data):
+        return Saler.objects.create_user(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+
+
+class TechnicianSerializer(CustomUserSerializer):
+    def create(self, validated_data):
+        return Technician.objects.create_user(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
 
 
 class CustomUserListSerializer(CustomUserSerializer):

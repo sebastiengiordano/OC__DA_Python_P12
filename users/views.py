@@ -1,18 +1,36 @@
 from rest_framework import generics, viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 
-from users.models import CustomUser
+from users.models import CustomUser, Manager, Saler, Technician
 from users.serializers import \
+    ManagerSerializer, SalerSerializer, TechnicianSerializer, \
     CustomUserSerializer, CustomUserListSerializer
 from users.permissions import IsAdminAuthenticated
 
 
-class RegisterView(generics.CreateAPIView):
-    '''Class which manage the create action.'''
 
-    queryset = CustomUser.objects.all()
+class RegisterManagerView(generics.CreateAPIView):
+    '''Class which manage the create action for a Manager.'''
+
+    queryset = Manager.objects.all()
     permission_classes = (IsAdminAuthenticated,)
-    serializer_class = CustomUserSerializer
+    serializer_class = ManagerSerializer
+
+
+class RegisterSalerView(generics.CreateAPIView):
+    '''Class which manage the create action for a Saler.'''
+
+    queryset = Saler.objects.all()
+    permission_classes = (IsAdminAuthenticated,)
+    serializer_class = SalerSerializer
+
+
+class RegisterTechnicianView(generics.CreateAPIView):
+    '''Class which manage the create action for a Technician.'''
+
+    queryset = Technician.objects.all()
+    permission_classes = (IsAdminAuthenticated,)
+    serializer_class = TechnicianSerializer
 
 
 class UserView(viewsets.GenericViewSet,
