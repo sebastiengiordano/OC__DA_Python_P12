@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
-    'EXCEPTION_HANDLER':'issue_tracking_system.utils.custom_exception_handler'
 }
 
 MIDDLEWARE = [
@@ -83,14 +82,34 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'epic_events',
+        'USER': "postgres",
+        'PASSWORD': 'admin_pwd',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'CONN_MAX_AGE': None,
     }
 }
 
 
 # Custom users
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
