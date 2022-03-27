@@ -5,7 +5,7 @@ from rest_framework import routers
 from .views import ClientView
 
 router = routers.SimpleRouter()
-router.register('client', ClientView, basename='client')
+router.register('clients', ClientView, basename='client')
 
 app_name = 'clients'
 urlpatterns = [

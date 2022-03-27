@@ -1,3 +1,4 @@
+from urllib import request
 from rest_framework import serializers
 
 from .models import Client
@@ -7,6 +8,16 @@ from users.models import Saler
 class ClientSerializerMethods(serializers.ModelSerializer):
     '''Methods used for client's serializers.'''
 
+    def create(self, validated_data):
+        """Creates and saves a Client."""
+
+        # Get the current user
+        user = self.context['request'].user
+        # Create the client
+        return Client.objects.create(
+            sales_contact=user,
+            **validated_data)
+
     def get_client_id(self, instance):
         return instance.id
 
@@ -14,16 +25,26 @@ class ClientSerializerMethods(serializers.ModelSerializer):
         """
         Check if there is at least one field not empty among
         email, phone and mobil.
+        And append it/them in data.
         """
+
+        # Get data from request
+        request_data = self.context['request'].data
+        email = request_data.get('email')
+        phone = request_data.get('phone')
+        mobil = request_data.get('mobil')
         if not (
-                data.get('email') is not None
+                email is not None
                 or
-                data.get('phone') is not None
+                phone is not None
                 or
-                data.get('mobil') is not None):
+                mobil is not None):
             raise serializers.ValidationError(
                 "At least one field among "
                 "email, phone and mobil must be filled.")
+        data['email'] = email or "Not Filled"
+        data['phone'] = phone or "Not Filled"
+        data['mobil'] = mobil or "Not Filled"
         return data
 
 
@@ -31,7 +52,6 @@ class ClientSerializer(ClientSerializerMethods):
     '''Serializer of client.'''
 
     client_id = serializers.SerializerMethodField()
-    author_user_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -47,10 +67,12 @@ class ClientSerializer(ClientSerializerMethods):
 class ClientDetailSerializer(ClientSerializerMethods):
     '''Detail serializer of client.'''
 
+    client_id = serializers.SerializerMethodField()
     saler_first_name = serializers.SerializerMethodField()
     saler_last_name = serializers.SerializerMethodField()
 
     class Meta:
+        model = Client
         fields = [
             'client_id',
             "first_name",
@@ -59,6 +81,7 @@ class ClientDetailSerializer(ClientSerializerMethods):
             "phone",
             "mobil",
             "company_name",
+            "sales_contact_id",
             "saler_first_name",
             "saler_last_name",
             'date_created',

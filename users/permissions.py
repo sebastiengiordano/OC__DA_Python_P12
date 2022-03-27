@@ -16,7 +16,7 @@ class IsSalerAuthenticated(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user
                     and request.user.is_authenticated
-                    and request.user.type == Saler.type.SALER)
+                    and request.user.type == "SALER")
 
 
 class IsTechnicianAuthenticated(BasePermission):
@@ -24,4 +24,4 @@ class IsTechnicianAuthenticated(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user
                     and request.user.is_authenticated
-                    and request.user.type == Technician.type.TECHNICIAN)
+                    and request.user.type == "TECHNICIAN")
