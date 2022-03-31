@@ -33,6 +33,12 @@ class ClientSerializerMethods(serializers.ModelSerializer):
         email = request_data.get('email')
         phone = request_data.get('phone')
         mobil = request_data.get('mobil')
+        # Check if client already exist (update in progress)
+        if self.instance is not None:
+            # Keep instance value if no updated value
+            email = email or self.instance.email
+            phone = phone or self.instance.phone
+            mobil = mobil or self.instance.mobil
         if not (
                 email is not None
                 or
