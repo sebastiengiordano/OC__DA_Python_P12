@@ -8,7 +8,6 @@ from users.serializers import \
 from users.permissions import IsAdminAuthenticated
 
 
-
 class RegisterManagerView(generics.CreateAPIView):
     '''Class which manage the create action for a Manager.'''
 

@@ -1,10 +1,8 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from .models import Client
 from .serializers import ClientSerializer, ClientDetailSerializer
 from .permissions import ClientPermission
-from users.permissions import IsAdminAuthenticated, IsSalerAuthenticated
 
 
 class MultipleSerializerMixin:
@@ -26,16 +24,4 @@ class ClientView(MultipleSerializerMixin, viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     detail_serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
-    permission_classes = [ClientPermission | IsAdminAuthenticated]
-
-
-    # def get_permissions(self):
-    #     """
-    #     Instantiates and returns the list of
-    #     permissions that this view require.
-    #     """
-    #     if self.action == 'create':
-    #         permission_classes = (IsAuthenticated,)
-    #     else:
-    #         permission_classes = (ClientPermission,)
-    #     return [permission() for permission in permission_classes]
+    permission_classes = (ClientPermission,)
