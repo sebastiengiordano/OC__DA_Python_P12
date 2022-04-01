@@ -26,6 +26,8 @@ class ClientSerializerMethods(serializers.ModelSerializer):
         Check if there is at least one field not empty among
         email, phone and mobil.
         And append it/them in data.
+
+        Moreover, manage client update.
         """
 
         # Get data from request
@@ -35,10 +37,13 @@ class ClientSerializerMethods(serializers.ModelSerializer):
         mobil = request_data.get('mobil')
         # Check if client already exist (update in progress)
         if self.instance is not None:
-            # Keep instance value if no updated value
-            email = email or self.instance.email
-            phone = phone or self.instance.phone
-            mobil = mobil or self.instance.mobil
+            # Keep instance value if no updated value, and
+            # manage the case when user want to delete an invalid entry
+            email = '' if email == '' else email or self.instance.email
+            phone = '' if phone == '' else phone or self.instance.phone
+            mobil = '' if mobil == '' else mobil or self.instance.mobil
+        # Check if there is at least one field
+        # not empty among email, phone and mobil.
         if not (
                 email is not None
                 or
@@ -48,9 +53,10 @@ class ClientSerializerMethods(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "At least one field among "
                 "email, phone and mobil must be filled.")
-        data['email'] = email or "Not Filled"
-        data['phone'] = phone or "Not Filled"
-        data['mobil'] = mobil or "Not Filled"
+        # Append request's data in data
+        data['email'] = email or ''
+        data['phone'] = phone or ''
+        data['mobil'] = mobil or ''
         return data
 
 
