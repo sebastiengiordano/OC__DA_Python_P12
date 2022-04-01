@@ -32,8 +32,7 @@ class Client(models.Model):
     REQUIRED_FIELDS = [
         'first_name',
         'last_name',
-        'company_name',
-        'sales_contact']
+        'company_name']
 
     class Meta:
         unique_together = \
