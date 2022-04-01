@@ -1,4 +1,3 @@
-from weakref import proxy
 from django.db import models
 
 from django.contrib.auth.models import (
@@ -123,17 +122,20 @@ class CustomUser(AbstractBaseUser):
 
 class ManagerManager(CustomUserManager):
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=CustomUser.Type.MANAGER)
+        return super().get_queryset(*args, **kwargs)\
+            .filter(type=CustomUser.Type.MANAGER)
 
 
 class SalerManager(CustomUserManager):
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=CustomUser.Type.SALER)
+        return super().get_queryset(*args, **kwargs)\
+            .filter(type=CustomUser.Type.SALER)
 
 
 class TechnicianManager(CustomUserManager):
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type=CustomUser.Type.TECHNICIAN)
+        return super().get_queryset(*args, **kwargs)\
+            .filter(type=CustomUser.Type.TECHNICIAN)
 
 
 class Manager(CustomUser):

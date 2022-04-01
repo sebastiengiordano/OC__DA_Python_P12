@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users.apps.UsersConfig',
     'clients.apps.ClientsConfig',
+    'contracts.apps.ContractsConfig',
 ]
 
 REST_FRAMEWORK = {

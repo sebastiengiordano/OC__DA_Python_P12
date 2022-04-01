@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import update_session_auth_hash
 
 from users.models import \
@@ -42,8 +40,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.first_name = validated_data.get(
+            'first_name',
+            instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name',
+            instance.last_name)
 
         instance.save()
 

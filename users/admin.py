@@ -8,6 +8,7 @@ User = get_user_model()
 # Remove Group Model from admin. We're not using it.
 admin.site.unregister(Group)
 
+
 class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
@@ -25,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2')}
-        ),
+         ),
     )
     search_fields = ['email']
     ordering = ['email']

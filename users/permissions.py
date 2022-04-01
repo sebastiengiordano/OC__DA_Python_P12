@@ -1,7 +1,5 @@
 from rest_framework.permissions import BasePermission
 
-from users.models import Saler, Technician
-
 
 class IsAdminAuthenticated(BasePermission):
 
