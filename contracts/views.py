@@ -1,8 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
 
 from .models import Contract
 from .serializers import ContractSerializer, ContractDetailSerializer
 from .permissions import ContractPermission
+from users.permissions import IsAdminAuthenticated, IsSalerAuthenticated
 
 
 class MultipleSerializerMixin:
@@ -18,10 +20,27 @@ class MultipleSerializerMixin:
         return super().get_serializer_class()
 
 
-class ContractView(MultipleSerializerMixin, viewsets.ModelViewSet):
-    '''View which manage all actions on Contracts.'''
+class ContractView(MultipleSerializerMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+    '''View which manage retrieve, update,
+    destroy and list actions on Contracts.
+    '''
 
     serializer_class = ContractSerializer
     detail_serializer_class = ContractDetailSerializer
     queryset = Contract.objects.all()
     permission_classes = (ContractPermission,)
+
+
+class ContractCreateView(mixins.CreateModelMixin,
+                         GenericViewSet):
+    '''View which manage create action on Contracts.
+    '''
+
+    serializer_class = ContractSerializer
+    queryset = Contract.objects.all()
+    permission_classes = [IsAdminAuthenticated | IsSalerAuthenticated]

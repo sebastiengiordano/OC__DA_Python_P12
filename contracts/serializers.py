@@ -15,7 +15,7 @@ class ContractSerializerMethods(serializers.ModelSerializer):
         user = self.context['request'].user
         # Create the contract
         return Contract.objects.create(
-            sales_contact=user,
+            saler=user,
             **validated_data)
 
     def get_contract_id(self, instance):

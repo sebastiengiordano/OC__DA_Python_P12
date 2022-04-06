@@ -17,7 +17,7 @@ class Contract(models.Model):
                             related_name='contract_client')
     amount = models.FloatField(
         verbose_name='amount')
-    payment_due = models.DateTimeField()
+    payment_due = models.DateField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
