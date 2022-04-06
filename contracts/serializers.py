@@ -69,7 +69,7 @@ class ContractDetailSerializer(ContractSerializerMethods):
             "saler_id",
             "saler_first_name",
             "saler_last_name",
-            'client_id'
+            'client_id',
             "client_first_name",
             "client_last_name",
             "client_email",

@@ -15,6 +15,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path(
         'contracts/clients/<int:client_id>/',
-        ContractCreateView,
+        ContractCreateView.as_view(),
         name='create_contracts'),
 ]
