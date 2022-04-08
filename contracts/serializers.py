@@ -8,16 +8,6 @@ from clients.models import Client
 class ContractSerializerMethods(serializers.ModelSerializer):
     '''Methods used for contract's serializers.'''
 
-    def create(self, validated_data):
-        """Creates and saves a Contract."""
-
-        # Get the current user
-        user = self.context['request'].user
-        # Create the contract
-        return Contract.objects.create(
-            saler=user,
-            **validated_data)
-
     def get_contract_id(self, instance):
         return instance.id
 
@@ -45,12 +35,9 @@ class ContractSerializer(ContractSerializerMethods):
             ]
 
 
-class ContractDetailSerializer(ContractSerializerMethods):
+class ContractDetailSerializer(ContractSerializer):
     '''Detail serializer of contract.'''
 
-    contract_id = serializers.SerializerMethodField()
-    saler_id = serializers.SerializerMethodField()
-    client_id = serializers.SerializerMethodField()
     saler_first_name = serializers.SerializerMethodField()
     saler_last_name = serializers.SerializerMethodField()
     client_first_name = serializers.SerializerMethodField()
@@ -58,6 +45,9 @@ class ContractDetailSerializer(ContractSerializerMethods):
     client_email = serializers.SerializerMethodField()
     client_phone = serializers.SerializerMethodField()
     client_mobil = serializers.SerializerMethodField()
+    payment_due = serializers.DateField(
+        format="%d-%m-%Y",
+        input_formats=['%d-%m-%Y', '%d/%m/%Y', 'iso-8601'])
 
     class Meta:
         model = Contract
@@ -90,6 +80,18 @@ class ContractDetailSerializer(ContractSerializerMethods):
         queryset = Saler.objects.filter(pk=instance.saler.id)
         saler = queryset[0]
         return saler.last_name
+
+    def get_client_first_name(self, instance):
+        # Get client first name
+        queryset = Client.objects.filter(pk=instance.client.id)
+        client = queryset[0]
+        return client.first_name
+
+    def get_client_last_name(self, instance):
+        # Get client last name
+        queryset = Client.objects.filter(pk=instance.client.id)
+        client = queryset[0]
+        return client.last_name
 
     def get_client_email(self, instance):
         # Get client email

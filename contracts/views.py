@@ -1,7 +1,7 @@
 from rest_framework import mixins, status
 from rest_framework.viewsets import GenericViewSet, generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 
 from django.shortcuts import get_object_or_404
 
@@ -16,13 +16,14 @@ from clients.models import Client
 class MultipleSerializerMixin:
     '''Class used to set serializer according to action.'''
 
-    detail_serializer_class = None
+    list_serializer_class = None
+    action_for_list_serializer = ('list', 'create')
 
     def get_serializer_class(self):
         if (
-                self.action == 'retrieve'
-                and self.detail_serializer_class is not None):
-            return self.detail_serializer_class
+                self.action in self.action_for_list_serializer
+                and self.list_serializer_class is not None):
+            return self.list_serializer_class
         return super().get_serializer_class()
 
 
@@ -36,14 +37,13 @@ class ContractView(MultipleSerializerMixin,
     destroy and list actions on Contracts.
     '''
 
-    serializer_class = ContractSerializer
-    detail_serializer_class = ContractDetailSerializer
+    serializer_class = ContractDetailSerializer
+    list_serializer_class = ContractSerializer
     queryset = Contract.objects.all()
     permission_classes = (ContractPermission,)
 
 
-class ContractCreateView(APIView):
-# class ContractCreateView(generics.CreateAPIView):
+class ContractCreateView(generics.CreateAPIView):
     '''View which manage create action on Contracts.'''
 
     permission_classes = [IsAdminAuthenticated | IsSalerAuthenticated]
@@ -58,6 +58,8 @@ class ContractCreateView(APIView):
         if serializer.is_valid():
             # Get client by id
             client = get_object_or_404(Client, pk=client_id)
+            # Check if the saler is in contact with this client
+            self.check_if_saler_in_contact_with_client(request.user, client)
             # Create the contract
             contract = Contract.objects.create(
                 title=serializer.validated_data['title'],
@@ -69,3 +71,11 @@ class ContractCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def check_if_saler_in_contact_with_client(self, saler, client):
+        clients_of_saler = Client.objects.filter(sales_contact=saler)
+        if client not in clients_of_saler:
+            raise PermissionDenied(
+                detail=(
+                    'Method post is not allowed since you\'re '
+                    'not the saler in contact with this client.')
+                )

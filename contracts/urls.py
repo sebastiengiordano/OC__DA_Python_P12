@@ -6,15 +6,15 @@ from .views import ContractView, ContractCreateView
 
 router = routers.SimpleRouter()
 router.register('contracts', ContractView, basename='contracts')
-# router.register('clients/<int:client_id>/', ContractCreateView, basename='contracts')
 
 app_name = 'contracts'
 urlpatterns = [
-    # For managed all Contract's action
-    # (create, list, retrieve, update, destroy)
+    # For managed the following Contract's action:
+    # list, retrieve, update, destroy
     path('', include(router.urls)),
+    # For managed Contract create action
     path(
-        'contracts/clients/<int:client_id>/',
+        'clients/<int:client_id>/contracts/',
         ContractCreateView.as_view(),
         name='create_contracts'),
 ]
