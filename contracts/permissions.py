@@ -6,7 +6,7 @@ class ContractPermission(BasePermission):
 
     Admin and manager have all permissions.
     All salers can create a new contrat.
-    Saler which create the contrat can used all others actions.
+    Saler who create the contrat can used all others actions.
     Other users have only read permissions.
     '''
 

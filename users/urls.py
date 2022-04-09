@@ -18,7 +18,7 @@ urlpatterns = [
     path('token/refresh/',
          TokenRefreshView.as_view(),
          name='token_refresh'),
-    # For register a new User (which could be a Manager, Saler or Technician)
+    # For register a new User (who could be a Manager, Saler or Technician)
     path('register/manager/',
          RegisterManagerView.as_view(),
          name='register_manager'),
