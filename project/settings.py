@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'clients.apps.ClientsConfig',
     'contracts.apps.ContractsConfig',
+    'events.apps.EventsConfig',
 ]
 
 REST_FRAMEWORK = {
