@@ -24,14 +24,21 @@ class Event(models.Model):
                             on_delete=models.CASCADE,
                             related_name='contract_event')
     status = models.CharField(
-        verbose_name='contract_title',
+        verbose_name='event_status',
         choices=EVENT_STATUS,
         max_length=11,
+        null=True,
         default='To_Sign')
     attendees = models.IntegerField(
-        verbose_name='attendees')
-    event_date = models.DateField()
-    note = models.TextField()
+        verbose_name='attendees',
+        null=True)
+    event_date = models.DateField(
+        verbose_name='event_date',
+        null=True)
+    note = models.TextField(
+        verbose_name='note',
+        null=True,
+        default='')
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

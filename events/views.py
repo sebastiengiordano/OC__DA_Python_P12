@@ -6,7 +6,9 @@ from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
 from .models import Event
-from .serializers import EventSerializer, EventDetailSerializer
+from .serializers import \
+    EventSerializer, EventDetailSerializer, \
+    EventCreateSerializer, EventUpdateSerializer
 from .permissions import EventPermission
 
 from users.models import Technician
@@ -19,14 +21,13 @@ class MultipleSerializerMixin:
     '''Class used to set serializer according to action.'''
 
     list_serializer_class = None
-    action_for_list_serializer = ('list', 'create')
 
     def get_serializer_class(self):
-        if (
-                self.action in self.action_for_list_serializer
-                and self.list_serializer_class is not None):
-            return self.list_serializer_class
-        return super().get_serializer_class()
+        if self.action == 'list':
+            return EventSerializer
+        if self.action == 'update':
+            return EventUpdateSerializer
+        return EventDetailSerializer
 
 
 class EventView(MultipleSerializerMixin,
@@ -39,10 +40,51 @@ class EventView(MultipleSerializerMixin,
     destroy and list actions on Events.
     '''
 
-    serializer_class = EventDetailSerializer
-    list_serializer_class = EventSerializer
     queryset = Event.objects.all()
     permission_classes = (EventPermission,)
+
+    def update(self, request, pk):
+        """
+        Create an event.
+        """
+        # Check if request data is valid
+        serializer = self.get_serializer_class()(data=request.data)
+        if serializer.is_valid():
+            # Get event by id
+            event = get_object_or_404(Event, pk=pk)
+            # Check if the user manage this event
+            self.check_if_user_manage_this_event(request.user, event)
+            # Get technican by email
+            email = serializer.validated_data.get('technician_email')
+            technician = get_object_or_404(
+                Technician,
+                email=email)
+            # Create the event
+            Event.objects.update(
+                technician=technician or event.technician,
+                attendees=(
+                    serializer.validated_data.get('attendees')
+                    or event.attendees),
+                event_date=(
+                    serializer.validated_data.get('event_date')
+                    or event.event_date),
+                note=(
+                    serializer.validated_data.get('note')
+                        or event.note))
+            serializer = EventDetailSerializer(
+                get_object_or_404(Event, pk=pk))
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def check_if_user_manage_this_event(self, user, event: Event):
+        saler = event.contract.saler
+        technician = event.technician
+        if user not in (saler, technician):
+            raise PermissionDenied(
+                detail=(
+                    'Method put is not allowed since '
+                    'you\'re not in contact with this client.')
+                )
 
 
 class EventCreateView(generics.CreateAPIView):
@@ -56,7 +98,7 @@ class EventCreateView(generics.CreateAPIView):
         """
 
         # Check if request data is valid
-        serializer = EventDetailSerializer(data=request.data)
+        serializer = EventCreateSerializer(data=request.data)
         if serializer.is_valid():
             # Get contract by id
             contract = get_object_or_404(Contract, pk=contract_id)
@@ -75,23 +117,23 @@ class EventCreateView(generics.CreateAPIView):
                 client=contract.client,
                 technician=technician,
                 contract=contract,
-                attendees=serializer.validated_data['attendees'],
-                event_date=serializer.validated_data['event_date'],
-                note=serializer.validated_data['note'])
+                attendees=serializer.validated_data.get('attendees'),
+                event_date=serializer.validated_data.get('event_date'),
+                note=serializer.validated_data.get('note'))
             serializer = EventSerializer(event)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def check_if_user_in_contact_with_client(self, user, client):
+    def check_if_user_in_contact_with_client(self, user, client: Client):
         clients_of_user = Client.objects.filter(sales_contact=user)
         if client not in clients_of_user:
             raise PermissionDenied(
                 detail=(
-                    'Method post is not allowed since you\'re '
-                    'not the user in contact with this client.')
+                    'Method post is not allowed since '
+                    'you\'re not in contact with this client.')
                 )
 
-    def check_if_user_manage_this_contract(self, user, contract):
+    def check_if_user_manage_this_contract(self, user, contract: Contract):
         contracts_of_user = Contract.objects.filter(saler=user)
         if contract not in contracts_of_user:
             raise PermissionDenied(
