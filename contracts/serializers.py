@@ -58,6 +58,7 @@ class ContractDetailSerializer(ContractSerializer):
             "title",
             "amount",
             "payment_due",
+            "signed",
             "saler_id",
             "saler_first_name",
             "saler_last_name",

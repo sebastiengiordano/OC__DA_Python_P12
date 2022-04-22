@@ -18,6 +18,9 @@ class Contract(models.Model):
     amount = models.FloatField(
         verbose_name='amount')
     payment_due = models.DateField()
+    signed = models.BooleanField(
+        null=True,
+        default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -29,7 +32,6 @@ class Contract(models.Model):
 
     def __str__(self):
         return (
-            "Contract"
-            f"\n\ttitle: {self.title}"
-            f"\n\tsaler_id: {self.saler.id}"
-            f"\n\tclient_id: {self.client.id}")
+            f"{self.title}"
+            f"\tsaler: {self.saler.id}"
+            f"\tclient: {self.client.id}")

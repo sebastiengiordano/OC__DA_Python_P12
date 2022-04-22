@@ -12,13 +12,19 @@ class Client(models.Model):
         max_length=25)
     email = models.EmailField(
         verbose_name='email address',
-        max_length=50)
+        max_length=50,
+        blank=True,
+        null=True,)
     phone = models.CharField(
         verbose_name='phone number',
-        max_length=15)
+        max_length=15,
+        blank=True,
+        null=True)
     mobil = models.CharField(
         verbose_name='mobil number',
-        max_length=15)
+        max_length=15,
+        blank=True,
+        null=True)
     company_name = models.CharField(
         verbose_name='company name',
         max_length=100)
@@ -40,7 +46,6 @@ class Client(models.Model):
 
     def __str__(self):
         return (
-            "Client"
-            f"\n\tfirst name: {self.first_name}"
-            f"\n\tlast name: {self.last_name}"
-            f"\n\tcompany name: {self.company_name}")
+            f"{self.first_name}"
+            f" / {self.last_name}"
+            f" - from {self.company_name}")

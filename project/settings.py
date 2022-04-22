@@ -91,25 +91,12 @@ DATABASES = {
         'PASSWORD': 'admin_pwd',
         'HOST': 'localhost',
         'PORT': '5432',
-        'CONN_MAX_AGE': None,
     }
 }
 
 
 # Custom users
 AUTH_USER_MODEL = 'users.CustomUser'
-
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

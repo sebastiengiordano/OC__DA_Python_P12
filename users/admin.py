@@ -9,17 +9,20 @@ User = get_user_model()
 admin.site.unregister(Group)
 
 
+@admin.register(User)
 class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ['email', 'admin']
+    list_display = ['email', 'first_name', 'last_name', 'admin']
     list_filter = ['admin']
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ()}),
+        (None, {'fields': ('email', 'first_name', 'last_name', 'password')}),
         ('Permissions', {'fields': ('admin',)}),
+        ("Date informations",
+         {'fields': ('date_created', 'date_updated')}),
     )
+    readonly_fields = ('date_created', 'date_updated')
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
@@ -28,9 +31,6 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')}
          ),
     )
-    search_fields = ['email']
+    search_fields = ['email', 'first_name']
     ordering = ['email']
     filter_horizontal = ()
-
-
-admin.site.register(User, UserAdmin)

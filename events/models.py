@@ -31,12 +31,15 @@ class Event(models.Model):
         default='To_Sign')
     attendees = models.IntegerField(
         verbose_name='attendees',
+        blank=True,
         null=True)
     event_date = models.DateField(
         verbose_name='event_date',
+        blank=True,
         null=True)
     note = models.TextField(
         verbose_name='note',
+        blank=True,
         null=True,
         default='')
     date_created = models.DateTimeField(auto_now_add=True)
