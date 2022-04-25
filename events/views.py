@@ -51,7 +51,7 @@ class EventView(MultipleSerializerMixin,
 
     def update(self, request, pk):
         """
-        Create an event.
+        Update an event.
         """
         # Check if request data is valid
         serializer = self.get_serializer_class()(data=request.data)

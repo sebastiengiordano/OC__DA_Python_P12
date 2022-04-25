@@ -17,11 +17,11 @@ def main():
     with open('secret.py', 'w') as secret_file:
         secret_file.write(f'DJANGO_SECRET_KEY = "{secret_key}"')
         secret_file.write('\n\n')
-        secret_file.write(f'NAME_DB = "{db_name}"\n')
-        secret_file.write(f'USERNAME_DB = "{db_user}"\n')
-        secret_file.write(f'PASSWORD_DB = "{db_password}"\n')
-        secret_file.write(f'HOST_DB = "{db_host}"\n')
-        secret_file.write(f'PORT_DB = "{db_port}"\n')
+        secret_file.write(f'DB_NAME = "{db_name}"\n')
+        secret_file.write(f'DB_USERNAME = "{db_user}"\n')
+        secret_file.write(f'DB_PASSWORD = "{db_password}"\n')
+        secret_file.write(f'DB_HOST = "{db_host}"\n')
+        secret_file.write(f'DB_PORT = "{db_port}"\n')
 
 
 if __name__ == '__main__':
