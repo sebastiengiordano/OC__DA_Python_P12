@@ -13,19 +13,11 @@ class ContractSerializerMethods(serializers.ModelSerializer):
     def get_contract_id(self, instance):
         return instance.id
 
-    def get_saler_id(self, instance):
-        return instance.saler.id
-
-    def get_client_id(self, instance):
-        return instance.client.id
-
 
 class ContractSerializer(ContractSerializerMethods):
     '''Serializer of contract.'''
 
     contract_id = serializers.SerializerMethodField()
-    saler_id = serializers.SerializerMethodField()
-    client_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Contract

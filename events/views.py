@@ -54,14 +54,18 @@ class EventView(MultipleSerializerMixin,
             event = get_object_or_404(Event, pk=pk)
             # Check if the user manage this event
             self.check_if_user_manage_this_event(request.user, event)
-            # Get technican by email
+            # Get technican by email or keep the one in event
             email = serializer.validated_data.get('technician_email')
-            technician = get_object_or_404(
-                Technician,
-                email=email)
+            if email is not None:
+                technician = Technician.objects.filter(email=email)
+            else:
+                technician = event.technician
             # Create the event
             Event.objects.update(
-                technician=technician or event.technician,
+                technician=technician,
+                status=(
+                    serializer.validated_data.get('status')
+                    or event.status),
                 attendees=(
                     serializer.validated_data.get('attendees')
                     or event.attendees),

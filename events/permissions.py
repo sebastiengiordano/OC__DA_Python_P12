@@ -12,12 +12,23 @@ class EventPermission(BasePermission):
     '''
 
     def has_permission(self, request, view):
-        return bool(
-            request.user and
-            request.user.is_authenticated and
-            request.user.is_admin or
-            request.method in SAFE_METHODS or
-            request.user.type == "SALER")
+        # User shall be authenticated
+        if not (request.user and
+                request.user.is_authenticated):
+            return False
+
+        # Admin and manager have all permissions
+        if request.user.is_admin:
+            return True
+
+        # All salers can create a new event.
+        if (request.method == 'POST'):
+            if request.user.type == "SALER":
+                return True
+            else:
+                return False
+
+        return True
 
     def has_object_permission(self, request, view, obj):
         # Admin and manager have all permissions

@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+# local imports
+from secret import (
+    DJANGO_SECRET_KEY,
+    NAME_DB,
+    USERNAME_DB,
+    PASSWORD_DB,
+    HOST_DB,
+    PORT_DB)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7=_n$+5)2tj*_7hn2ngb-6)zzez3g@p!bki_fuyj*o$c)z&+--'
+SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +56,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 MIDDLEWARE = [
@@ -86,11 +96,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'epic_events',
-        'USER': "postgres",
-        'PASSWORD': 'admin_pwd',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': NAME_DB,
+        'USER': USERNAME_DB,
+        'PASSWORD': PASSWORD_DB,
+        'HOST': HOST_DB,
+        'PORT': PORT_DB,
     }
 }
 

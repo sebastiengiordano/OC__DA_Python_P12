@@ -14,17 +14,8 @@ class EventSerializerMethods(serializers.ModelSerializer):
     def get_event_id(self, instance):
         return instance.id
 
-    def get_client_id(self, instance):
-        return instance.client.id
-
-    def get_technician_id(self, instance):
-        return instance.technician.id
-
     def get_saler_id(self, instance):
         return instance.contract.saler.id
-
-    def get_contract_id(self, instance):
-        return instance.contract.id
 
     def get_title(self, instance):
         # Get contract title
@@ -92,9 +83,6 @@ class EventSerializer(EventSerializerMethods):
 
     event_id = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
-    client_id = serializers.SerializerMethodField()
-    technician_id = serializers.SerializerMethodField()
-    contract_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
@@ -177,12 +165,12 @@ class EventCreateSerializer(EventSerializerMethods):
 class EventUpdateSerializer(EventSerializerMethods):
     '''Serializer of event for create action.'''
 
-    attendees = serializers.SerializerMethodField(required=False)
+    attendees = serializers.IntegerField(required=False)
     event_date = serializers.DateField(
         format="%d-%m-%Y",
         input_formats=['%d-%m-%Y', '%d/%m/%Y', 'iso-8601'],
         required=False)
-    note = serializers.SerializerMethodField(required=False)
+    note = serializers.CharField(required=False)
     technician_email = serializers.EmailField(required=False)
 
     class Meta:
