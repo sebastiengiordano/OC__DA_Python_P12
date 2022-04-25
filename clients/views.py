@@ -25,3 +25,9 @@ class ClientView(MultipleSerializerMixin, viewsets.ModelViewSet):
     detail_serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
     permission_classes = (ClientPermission,)
+    filterset_fields = [
+        'first_name',
+        'last_name',
+        'email',
+        'company_name',
+        'sales_contact_id']

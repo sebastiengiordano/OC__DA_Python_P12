@@ -41,6 +41,10 @@ class ContractView(MultipleSerializerMixin,
     list_serializer_class = ContractSerializer
     queryset = Contract.objects.all()
     permission_classes = (ContractPermission,)
+    filterset_fields = [
+        'title',
+        'saler_id',
+        'client_id']
 
 
 class ContractCreateView(generics.CreateAPIView):

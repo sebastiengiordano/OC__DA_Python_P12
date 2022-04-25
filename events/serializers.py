@@ -91,7 +91,9 @@ class EventSerializer(EventSerializerMethods):
             "title",
             "client_id",
             "technician_id",
-            "contract_id"
+            "contract_id",
+            'status',
+            'event_date'
             ]
 
 

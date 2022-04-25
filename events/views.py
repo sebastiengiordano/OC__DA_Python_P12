@@ -42,6 +42,12 @@ class EventView(MultipleSerializerMixin,
 
     queryset = Event.objects.all()
     permission_classes = (EventPermission,)
+    filterset_fields = {
+        'client_id': ['exact'],
+        'technician_id': ['exact'],
+        'contract_id': ['exact'],
+        'status': ['exact'],
+        'event_date':['gte', 'lte', 'exact', 'gt', 'lt']}
 
     def update(self, request, pk):
         """
@@ -60,21 +66,21 @@ class EventView(MultipleSerializerMixin,
                 technician = Technician.objects.filter(email=email)
             else:
                 technician = event.technician
-            # Create the event
-            Event.objects.update(
-                technician=technician,
-                status=(
-                    serializer.validated_data.get('status')
-                    or event.status),
-                attendees=(
-                    serializer.validated_data.get('attendees')
-                    or event.attendees),
-                event_date=(
-                    serializer.validated_data.get('event_date')
-                    or event.event_date),
-                note=(
-                    serializer.validated_data.get('note')
-                        or event.note))
+            # Update the event
+            event.technician = technician
+            event.status = (
+                serializer.validated_data.get('status')
+                or event.status)
+            event.attendees = (
+                serializer.validated_data.get('attendees')
+                or event.attendees)
+            event.event_date = (
+                serializer.validated_data.get('event_date')
+                or event.event_date)
+            event.note = (
+                serializer.validated_data.get('note')
+                or event.note)
+            event.save()
             serializer = EventDetailSerializer(
                 get_object_or_404(Event, pk=pk))
             return Response(serializer.data, status=status.HTTP_201_CREATED)

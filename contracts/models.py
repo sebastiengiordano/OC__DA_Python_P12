@@ -5,8 +5,8 @@ class Contract(models.Model):
     '''This class aims to defined a contract.'''
 
     title = models.CharField(
-        verbose_name='contract_title',
-        max_length=200)
+                            verbose_name='contract_title',
+                            max_length=200)
     saler = models.ForeignKey(
                             'users.Saler',
                             on_delete=models.CASCADE,
@@ -15,12 +15,11 @@ class Contract(models.Model):
                             'clients.Client',
                             on_delete=models.CASCADE,
                             related_name='contract_client')
-    amount = models.FloatField(
-        verbose_name='amount')
+    amount = models.FloatField(verbose_name='amount')
     payment_due = models.DateField()
     signed = models.BooleanField(
-        null=True,
-        default=False)
+                            null=True,
+                            default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
