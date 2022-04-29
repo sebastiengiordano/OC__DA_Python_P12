@@ -27,6 +27,7 @@
   * [Prerequisite](#prerequisite)
   * [Installation](#installation)
   * [Run the program](#run-the-program)
+  * [Entity relation diagram](#entity-relation-diagram)
   * [Additional informations](#additional-informations)
 
 <br>
@@ -112,21 +113,6 @@ In order to configure this project, a script has been made. To launch the script
 	```sh
 	python manage.py runserver
 	```
-4. Use the following end-points:
-	```sh
-	https://documenter.getpostman.com/view/18383749/UVXbuzji
-	```
-or import the following export (you could find in the root of this API):
-	```sh
-	Issue Tracking System.postman_collection.json
-	```
-
-<br>
-<br>
-
-### Additional informations
-
-For more details on this API, please refer to its [documentation](https://documenter.getpostman.com/view/18383749/UyrBkGae) (Postman), and the CRM entity-relationship diagram below.
 
 <br>
 <br>
@@ -134,4 +120,12 @@ For more details on this API, please refer to its [documentation](https://docume
 ### Entity relation diagram
 <br>
 ![Entity relation diagram](/doc/Epic-Events_CurstomerRelationshipManagement.pngEpic-Events_CurstomerRelationshipManagement.png)
+
 <br>
+<br>
+
+### Additional informations
+
+For more details on this API, please refer to its [documentation](https://documenter.getpostman.com/view/18383749/UyrBkGae) (Postman), and the CRM entity-relationship diagram below.
+You could also find the postman export in:
+	- /doc/Epic Events.postman_collection.json
