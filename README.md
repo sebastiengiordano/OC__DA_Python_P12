@@ -27,7 +27,7 @@
   * [Prerequisite](#prerequisite)
   * [Installation](#installation)
   * [Run the program](#run-the-program)
-  * [Entity relation diagram](#entity-relation-diagram)
+  * [Entity relationship diagram](#entity-relationship-diagram)
   * [Additional informations](#additional-informations)
 
 <br>
@@ -52,7 +52,7 @@ In order ot create your datbase, you'll also need to install PostgreSQL 14.2.
 	```
 
 2. Clone the repository:
-	```sh
+	```
 	git clone https://github.com/sebastiengiordano/OC__DA_Python_P12
 	```
 
@@ -62,37 +62,39 @@ In order ot create your datbase, you'll also need to install PostgreSQL 14.2.
 	```
 
 4. Create a virtual environment:
-	```sh
+	```
 	python -m venv env  # Windows
 	python3 -m venv venv  # MacOs & Linux
 	```
 
 5. Activate the virtual environment:
-	```sh
+	```
 	.\env\Scripts\activate  # Windows
 	./venv/bin/activate  # MacOs & Linux
 	```
 
 6. From the "requirements.txt" file, install dependencies:
-	```sh
+	```
 	python -m pip install -r requirements.txt
 	```
 
 7. Create and configure database :
-	- Create the database
 
-With PostgreSQL (14.2) installed on your machine, create a databe using [SQL shell (psql)](https://docs.postgresql.fr/14/app-psql.html) or [PGadmin tool](https://www.pgadmin.org/docs/pgadmin4/development/modifying_tables.html). Please refers to PostgreSQL documentation for more information, cf. previous link.
+	> Create the database:
+ 	>>PostgreSQL (14.2) installed on your machine, create a databe using [SQL shell (psql)](https://docs.postgresql.fr/14/app-psql.html) or [PGadmin tool](https://www.pgadmin.org/docs/pgadmin4/development/modifying_tables.html). Please refers to PostgreSQL documentation for more information, cf. previous link.
 
-	- Setut the project:
-In order to configure this project, a script has been made. To launch the script run the following commande:
+	> Setup the project:
+	>>In order to configure this project, a script has been made. To launch the script run the following commande:
 
-	```sh
+	```
         setup.py
 	```
-	The script will asked for database name, username, password, host and port. It will also generate a 50 character random string to be usable as secret key.
 
-	- Make database migrations with:
-	```sh
+	>>The script will asked for database name, username, password, host and port. It will also generate a 50 character random string to be usable as secret key.
+
+	> Make database migrations with:
+
+	```
 	python manage.py makemigrations
 	python manage.py migrate
 	```
@@ -106,20 +108,21 @@ In order to configure this project, a script has been made. To launch the script
 	cd "folder project path" & cd OC__DA_Python_P12
 	```
 2. Activate the virtual environment (if its not already the case):
-	```sh
-	.\env\Scripts\activate
+	```
+	.\env\Scripts\activate  # Windows
+	./venv/bin/activate  # MacOs & Linux
 	```
 3. Run the server:
-	```sh
+	```
 	python manage.py runserver
 	```
 
 <br>
 <br>
 
-### Entity relation diagram
-<br>
-![Entity relation diagram](/doc/Epic-Events_CurstomerRelationshipManagement.png)
+### Entity relationship diagram
+
+ ![ERD](/doc/Epic-Events_CurstomerRelationshipManagement.png)
 
 <br>
 <br>
@@ -128,4 +131,5 @@ In order to configure this project, a script has been made. To launch the script
 
 For more details on this API, please refer to its [documentation](https://documenter.getpostman.com/view/18383749/UyrBkGae) (Postman), and the CRM entity-relationship diagram below.
 You could also find the postman export in:
-	- /doc/Epic Events.postman_collection.json
+
+	/doc/Epic Events.postman_collection.json
