@@ -119,7 +119,7 @@ In order to configure this project, a script has been made. To launch the script
 
 ### Entity relation diagram
 <br>
-![Entity relation diagram](/doc/Epic-Events_CurstomerRelationshipManagement.pngEpic-Events_CurstomerRelationshipManagement.png)
+![Entity relation diagram](/doc/Epic-Events_CurstomerRelationshipManagement.png)
 
 <br>
 <br>
